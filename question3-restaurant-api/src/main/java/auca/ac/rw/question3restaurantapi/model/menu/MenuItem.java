@@ -5,11 +5,11 @@ public class MenuItem {
     private String name;
     private String description;
     private Double price;
-    private String category; // Appetizer, Main Course, Dessert, Beverage
+    private String category; 
     private boolean available;
 
     public MenuItem() {
-        // default constructor for JSON
+     
     }
 
     public MenuItem(Long id, String name, String description, Double price, String category, boolean available) {
