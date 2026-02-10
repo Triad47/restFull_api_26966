@@ -12,7 +12,6 @@ public class UserProfile {
     private boolean active;
 
     public UserProfile() {
-        // default constructor for JSON
     }
 
     public UserProfile(Long userId, String username, String email, String fullName,
