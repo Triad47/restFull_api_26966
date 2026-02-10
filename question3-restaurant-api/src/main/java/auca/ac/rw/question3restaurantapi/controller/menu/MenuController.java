@@ -12,10 +12,8 @@ import java.util.List;
 @RequestMapping("/api/menu")
 public class MenuController {
 
-    // In-memory data
     private final List<MenuItem> menuItems = new ArrayList<>();
 
-    // Challenge: at least 8 items across categories
     public MenuController() {
         menuItems.add(new MenuItem(1L, "Samosa", "Crispy pastry with beef filling", 800.0, "Appetizer", true));
         menuItems.add(new MenuItem(2L, "Chicken Wings", "Spicy grilled wings", 2500.0, "Appetizer", true));
@@ -30,23 +28,20 @@ public class MenuController {
         menuItems.add(new MenuItem(8L, "Fresh Juice", "Mango or Passion fruit", 2000.0, "Beverage", true));
     }
 
-    // GET /api/menu - Get all menu items
     @GetMapping
     public ResponseEntity<List<MenuItem>> getAllMenuItems() {
-        return ResponseEntity.ok(menuItems); // 200
+        return ResponseEntity.ok(menuItems); 
     }
 
-    // GET /api/menu/{id} - Get specific menu item
     @GetMapping("/{id}")
     public ResponseEntity<MenuItem> getMenuItemById(@PathVariable Long id) {
         MenuItem found = findById(id);
         if (found == null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build(); // 404
         }
-        return ResponseEntity.ok(found); // 200
+        return ResponseEntity.ok(found); 
     }
 
-    // GET /api/menu/category/{category} - Get items by category
     @GetMapping("/category/{category}")
     public ResponseEntity<List<MenuItem>> getByCategory(@PathVariable String category) {
         List<MenuItem> results = new ArrayList<>();
@@ -55,10 +50,9 @@ public class MenuController {
                 results.add(item);
             }
         }
-        return ResponseEntity.ok(results); // 200
+        return ResponseEntity.ok(results); 
     }
 
-    // GET /api/menu/available?available=true - Get only available items
     @GetMapping("/available")
     public ResponseEntity<List<MenuItem>> getByAvailability(
             @RequestParam(value = "available", defaultValue = "true") boolean available
@@ -69,10 +63,9 @@ public class MenuController {
                 results.add(item);
             }
         }
-        return ResponseEntity.ok(results); // 200
+        return ResponseEntity.ok(results);
     }
 
-    // GET /api/menu/search?name={name} - Search menu items by name
     @GetMapping("/search")
     public ResponseEntity<List<MenuItem>> searchByName(@RequestParam String name) {
         List<MenuItem> results = new ArrayList<>();
@@ -81,44 +74,40 @@ public class MenuController {
                 results.add(item);
             }
         }
-        return ResponseEntity.ok(results); // 200
+        return ResponseEntity.ok(results); 
     }
 
-    // POST /api/menu - Add new menu item
     @PostMapping
     public ResponseEntity<MenuItem> addMenuItem(@RequestBody MenuItem newItem) {
         if (newItem.getId() == null) {
             newItem.setId(getNextId());
         }
         menuItems.add(newItem);
-        return ResponseEntity.status(HttpStatus.CREATED).body(newItem); // 201
+        return ResponseEntity.status(HttpStatus.CREATED).body(newItem); 
     }
 
-    // PUT /api/menu/{id}/availability - Toggle item availability
     @PutMapping("/{id}/availability")
     public ResponseEntity<MenuItem> toggleAvailability(@PathVariable Long id) {
         MenuItem found = findById(id);
         if (found == null) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build(); // 404
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build(); 
         }
 
         found.setAvailable(!found.isAvailable());
-        return ResponseEntity.ok(found); // 200
+        return ResponseEntity.ok(found); 
     }
 
-    // DELETE /api/menu/{id} - Remove menu item
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteMenuItem(@PathVariable Long id) {
         MenuItem found = findById(id);
         if (found == null) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build(); // 404
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
 
         menuItems.remove(found);
-        return ResponseEntity.noContent().build(); // 204
+        return ResponseEntity.noContent().build(); 
     }
 
-    // -------- helper methods --------
 
     private MenuItem findById(Long id) {
         for (MenuItem item : menuItems) {
