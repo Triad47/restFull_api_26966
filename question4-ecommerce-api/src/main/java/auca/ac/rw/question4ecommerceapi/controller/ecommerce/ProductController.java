@@ -14,7 +14,6 @@ public class ProductController {
 
     private final List<Product> products = new ArrayList<>();
 
-    // Create at least 10 sample products (required)
     public ProductController() {
         products.add(new Product(1L, "iPhone 14", "Apple smartphone", 1200.0, "Electronics", 10, "Apple"));
         products.add(new Product(2L, "Samsung Galaxy S23", "Samsung smartphone", 1100.0, "Electronics", 15, "Samsung"));
@@ -28,13 +27,11 @@ public class ProductController {
         products.add(new Product(10L, "Lenovo ThinkPad", "Business laptop", 950.0, "Computers", 6, "Lenovo"));
     }
 
-    // GET /api/products - Get all products (optional pagination)
     @GetMapping
     public ResponseEntity<List<Product>> getAllProducts(
             @RequestParam(required = false) Integer page,
             @RequestParam(required = false) Integer limit
     ) {
-        // If no pagination, return all
         if (page == null || limit == null) {
             return ResponseEntity.ok(products);
         }
@@ -49,7 +46,6 @@ public class ProductController {
         return ResponseEntity.ok(products.subList(startIndex, endIndex));
     }
 
-    // GET /api/products/{productId} - Get product details
     @GetMapping("/{productId}")
     public ResponseEntity<Product> getProductById(@PathVariable Long productId) {
         Product found = findById(productId);
@@ -59,7 +55,6 @@ public class ProductController {
         return ResponseEntity.ok(found);
     }
 
-    // GET /api/products/category/{category} - Get products by category
     @GetMapping("/category/{category}")
     public ResponseEntity<List<Product>> getProductsByCategory(@PathVariable String category) {
         List<Product> results = new ArrayList<>();
@@ -71,7 +66,6 @@ public class ProductController {
         return ResponseEntity.ok(results);
     }
 
-    // GET /api/products/brand/{brand} - Get products by brand
     @GetMapping("/brand/{brand}")
     public ResponseEntity<List<Product>> getProductsByBrand(@PathVariable String brand) {
         List<Product> results = new ArrayList<>();
@@ -83,7 +77,6 @@ public class ProductController {
         return ResponseEntity.ok(results);
     }
 
-    // GET /api/products/search?keyword={keyword} - Search in name or description
     @GetMapping("/search")
     public ResponseEntity<List<Product>> searchProducts(@RequestParam String keyword) {
         List<Product> results = new ArrayList<>();
@@ -98,7 +91,6 @@ public class ProductController {
         return ResponseEntity.ok(results);
     }
 
-    // GET /api/products/price-range?min={min}&max={max} - Products in price range
     @GetMapping("/price-range")
     public ResponseEntity<List<Product>> getProductsInPriceRange(
             @RequestParam Double min,
@@ -115,7 +107,6 @@ public class ProductController {
         return ResponseEntity.ok(results);
     }
 
-    // GET /api/products/in-stock - Get products with stockQuantity > 0
     @GetMapping("/in-stock")
     public ResponseEntity<List<Product>> getInStockProducts() {
         List<Product> results = new ArrayList<>();
@@ -129,7 +120,6 @@ public class ProductController {
         return ResponseEntity.ok(results);
     }
 
-    // POST /api/products - Add new product
     @PostMapping
     public ResponseEntity<Product> addProduct(@RequestBody Product newProduct) {
         if (newProduct.getProductId() == null) {
@@ -140,7 +130,6 @@ public class ProductController {
         return ResponseEntity.status(HttpStatus.CREATED).body(newProduct);
     }
 
-    // PUT /api/products/{productId} - Update product details
     @PutMapping("/{productId}")
     public ResponseEntity<Product> updateProduct(
             @PathVariable Long productId,
@@ -162,7 +151,6 @@ public class ProductController {
         return ResponseEntity.ok(found);
     }
 
-    // PATCH /api/products/{productId}/stock?quantity={quantity} - Update stock quantity
     @PatchMapping("/{productId}/stock")
     public ResponseEntity<Product> updateStockQuantity(
             @PathVariable Long productId,
@@ -178,7 +166,6 @@ public class ProductController {
         return ResponseEntity.ok(found);
     }
 
-    // DELETE /api/products/{productId} - Delete product
     @DeleteMapping("/{productId}")
     public ResponseEntity<Void> deleteProduct(@PathVariable Long productId) {
         Product found = findById(productId);
@@ -188,10 +175,9 @@ public class ProductController {
         }
 
         products.remove(found);
-        return ResponseEntity.noContent().build(); // 204
+        return ResponseEntity.noContent().build(); 
     }
 
-    // ---------- Helper Methods ----------
 
     private Product findById(Long id) {
         for (Product p : products) {
