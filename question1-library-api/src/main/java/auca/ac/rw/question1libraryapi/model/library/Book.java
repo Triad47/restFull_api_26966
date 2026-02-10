@@ -8,7 +8,7 @@ public class Book {
     private int publicationYear;
 
     public Book() {
-        // Default constructor (important for JSON conversion)
+        
     }
 
     public Book(Long id, String title, String author, String isbn, int publicationYear) {
