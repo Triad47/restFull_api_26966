@@ -12,10 +12,10 @@ import java.util.List;
 @RequestMapping("/api/students")
 public class StudentController {
 
-    // In-memory list (no DB)
+    
     private final List<Student> students = new ArrayList<>();
 
-    // Create at least 5 sample students (different majors + GPAs)
+   
     public StudentController() {
         students.add(new Student(1L, "Alice", "Niyonsenga", "alice@auca.ac.rw", "Computer Science", 3.8));
         students.add(new Student(2L, "Brian", "Mukamana", "brian@auca.ac.rw", "Information Technology", 3.2));
@@ -24,23 +24,20 @@ public class StudentController {
         students.add(new Student(5L, "Esther", "Irakoze", "esther@auca.ac.rw", "Software Engineering", 3.5));
     }
 
-    // GET /api/students - Get all students
     @GetMapping
     public ResponseEntity<List<Student>> getAllStudents() {
-        return ResponseEntity.ok(students); // 200
+        return ResponseEntity.ok(students); 
     }
 
-    // GET /api/students/{studentId} - Get student by ID
     @GetMapping("/{studentId}")
     public ResponseEntity<Student> getStudentById(@PathVariable Long studentId) {
         Student found = findStudentById(studentId);
         if (found == null) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build(); // 404
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build(); 
         }
-        return ResponseEntity.ok(found); // 200
+        return ResponseEntity.ok(found); 
     }
 
-    // GET /api/students/major/{major} - Get all students by major (path variable)
     @GetMapping("/major/{major}")
     public ResponseEntity<List<Student>> getStudentsByMajor(@PathVariable String major) {
         List<Student> results = new ArrayList<>();
@@ -51,10 +48,9 @@ public class StudentController {
             }
         }
 
-        return ResponseEntity.ok(results); // 200
+        return ResponseEntity.ok(results);
     }
 
-    // GET /api/students/filter?gpa={minGpa} - Filter students with GPA >= min
     @GetMapping("/filter")
     public ResponseEntity<List<Student>> filterByGpa(@RequestParam("gpa") Double minGpa) {
         List<Student> results = new ArrayList<>();
@@ -65,22 +61,20 @@ public class StudentController {
             }
         }
 
-        return ResponseEntity.ok(results); // 200
+        return ResponseEntity.ok(results); 
     }
-
-    // POST /api/students - Register a new student
+t
     @PostMapping
     public ResponseEntity<Student> registerStudent(@RequestBody Student newStudent) {
-        // Beginner-friendly: generate ID if missing
+     
         if (newStudent.getStudentId() == null) {
             newStudent.setStudentId(getNextStudentId());
         }
 
         students.add(newStudent);
-        return ResponseEntity.status(HttpStatus.CREATED).body(newStudent); // 201
+        return ResponseEntity.status(HttpStatus.CREATED).body(newStudent); 
     }
 
-    // PUT /api/students/{studentId} - Update student information
     @PutMapping("/{studentId}")
     public ResponseEntity<Student> updateStudent(
             @PathVariable Long studentId,
@@ -88,20 +82,18 @@ public class StudentController {
     ) {
         Student found = findStudentById(studentId);
         if (found == null) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build(); // 404
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build(); 
         }
 
-        // Update fields (simple & beginner-friendly)
         found.setFirstName(updatedStudent.getFirstName());
         found.setLastName(updatedStudent.getLastName());
         found.setEmail(updatedStudent.getEmail());
         found.setMajor(updatedStudent.getMajor());
         found.setGpa(updatedStudent.getGpa());
 
-        return ResponseEntity.ok(found); // 200
+        return ResponseEntity.ok(found); 
     }
 
-    // ---------------- Helper Methods ----------------
 
     private Student findStudentById(Long id) {
         for (Student s : students) {
