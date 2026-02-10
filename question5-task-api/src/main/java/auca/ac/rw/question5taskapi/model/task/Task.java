@@ -10,7 +10,6 @@ public class Task {
     private String dueDate;  // YYYY-MM-DD
 
     public Task() {
-        // Default constructor for JSON
     }
 
     public Task(Long taskId, String title, String description, boolean completed, String priority, String dueDate) {
