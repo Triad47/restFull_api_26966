@@ -14,7 +14,6 @@ public class TaskController {
 
     private final List<Task> tasks = new ArrayList<>();
 
-    // Sample tasks (helps for testing)
     public TaskController() {
         tasks.add(new Task(1L, "Finish Assignment", "Complete Spring Boot practical", false, "HIGH", "2026-02-15"));
         tasks.add(new Task(2L, "Buy groceries", "Milk, Bread, Eggs", true, "LOW", "2026-02-10"));
@@ -22,23 +21,20 @@ public class TaskController {
         tasks.add(new Task(4L, "Clean room", "Organize desk and books", false, "LOW", "2026-02-11"));
     }
 
-    // GET /api/tasks - Get all tasks
     @GetMapping
     public ResponseEntity<List<Task>> getAllTasks() {
-        return ResponseEntity.ok(tasks); // 200
+        return ResponseEntity.ok(tasks); 
     }
 
-    // GET /api/tasks/{taskId} - Get task by ID
     @GetMapping("/{taskId}")
     public ResponseEntity<Task> getTaskById(@PathVariable Long taskId) {
         Task found = findById(taskId);
         if (found == null) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build(); // 404
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build(); 
         }
-        return ResponseEntity.ok(found); // 200
+        return ResponseEntity.ok(found); 
     }
 
-    // GET /api/tasks/status?completed=true/false - Get tasks by completion status
     @GetMapping("/status")
     public ResponseEntity<List<Task>> getByStatus(@RequestParam boolean completed) {
         List<Task> results = new ArrayList<>();
@@ -47,10 +43,9 @@ public class TaskController {
                 results.add(t);
             }
         }
-        return ResponseEntity.ok(results); // 200
+        return ResponseEntity.ok(results); 
     }
 
-    // GET /api/tasks/priority/{priority} - Get tasks by priority
     @GetMapping("/priority/{priority}")
     public ResponseEntity<List<Task>> getByPriority(@PathVariable String priority) {
         List<Task> results = new ArrayList<>();
@@ -59,25 +54,23 @@ public class TaskController {
                 results.add(t);
             }
         }
-        return ResponseEntity.ok(results); // 200
+        return ResponseEntity.ok(results); 
     }
 
-    // POST /api/tasks - Create new task
     @PostMapping
     public ResponseEntity<Task> createTask(@RequestBody Task newTask) {
         if (newTask.getTaskId() == null) {
             newTask.setTaskId(getNextId());
         }
         tasks.add(newTask);
-        return ResponseEntity.status(HttpStatus.CREATED).body(newTask); // 201
+        return ResponseEntity.status(HttpStatus.CREATED).body(newTask); 
     }
 
-    // PUT /api/tasks/{taskId} - Update task
     @PutMapping("/{taskId}")
     public ResponseEntity<Task> updateTask(@PathVariable Long taskId, @RequestBody Task updated) {
         Task found = findById(taskId);
         if (found == null) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build(); // 404
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
 
         found.setTitle(updated.getTitle());
@@ -86,10 +79,9 @@ public class TaskController {
         found.setPriority(updated.getPriority());
         found.setDueDate(updated.getDueDate());
 
-        return ResponseEntity.ok(found); // 200
+        return ResponseEntity.ok(found); /
     }
 
-    // PATCH /api/tasks/{taskId}/complete - Mark task as completed
     @PatchMapping("/{taskId}/complete")
     public ResponseEntity<Task> markCompleted(@PathVariable Long taskId) {
         Task found = findById(taskId);
@@ -98,22 +90,18 @@ public class TaskController {
         }
 
         found.setCompleted(true);
-        return ResponseEntity.ok(found); // 200
+        return ResponseEntity.ok(found);
     }
-
-    // DELETE /api/tasks/{taskId} - Delete task
     @DeleteMapping("/{taskId}")
     public ResponseEntity<Void> deleteTask(@PathVariable Long taskId) {
         Task found = findById(taskId);
         if (found == null) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build(); // 404
-        }
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build(); 
 
         tasks.remove(found);
-        return ResponseEntity.noContent().build(); // 204
+        return ResponseEntity.noContent().build();
     }
 
-    // -------- helper methods --------
 
     private Task findById(Long id) {
         for (Task t : tasks) {
