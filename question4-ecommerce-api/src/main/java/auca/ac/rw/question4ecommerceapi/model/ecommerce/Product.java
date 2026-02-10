@@ -11,7 +11,7 @@ public class Product {
     private String brand;
 
     public Product() {
-        // Default constructor for JSON
+        
     }
 
     public Product(Long productId, String name, String description, Double price,
