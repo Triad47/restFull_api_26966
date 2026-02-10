@@ -9,7 +9,7 @@ public class Student {
     private Double gpa;
 
     public Student() {
-        // Default constructor for JSON -> Java conversion
+     
     }
 
     public Student(Long studentId, String firstName, String lastName, String email, String major, Double gpa) {
